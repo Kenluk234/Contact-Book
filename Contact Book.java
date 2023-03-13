@@ -38,17 +38,41 @@ public class Main {
             scn.nextLine();
             switch (cmd) {
                 case "A":
-                    System.out.println("Enter new name:");
-                    String newName = scn.nextLine().toUpperCase();
-                    System.out.println("Enter their phone number:");
-                    String newPhoneNum = scn.nextLine();
-                    System.out.println("Enter their email:");
-                    String newEmail = scn.nextLine();
-                    contact.add(new Person(newName, newPhoneNum, newEmail));
+                    boolean contactInvalid = true;
+                    while (contactInvalid == true) {
+                        System.out.println("Enter new name:");
+                        String newName = scn.nextLine().toUpperCase();
+                        System.out.println("Enter their phone number:");
+                        String newPhoneNum = scn.nextLine();
+                        System.out.println("Enter their email:");
+                        String newEmail = scn.nextLine();
+                        boolean duplicateFound = false;
+                        for (Person element : contact) {
+                            if (newName.equals(element.Name) || newPhoneNum.equals(element.PhoneNum) || newEmail.equals(element.Email)) {
+                                System.out.println(element.toString());
+                                duplicateFound = true;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+
+                        if (duplicateFound == true) {
+                            System.out.println("The new contact has the at least one identical traits as the existing ones, please change some of the contact details.");
+                            continue;
+                        }
+                        else {
+                            contactInvalid = false;
+                        }
+
+                        contact.add(new Person(newName, newPhoneNum, newEmail));
+                        System.out.println("New contact successfully added!");
+                        break;
+                    }
                     break;
 
                 case "D":
-                    System.out.println("Enter name to remove:");
+                    System.out.println("Enter name to delete:");
                     String removeName = scn.nextLine().toUpperCase();
 
                     boolean objectFoundD = false;
@@ -56,6 +80,7 @@ public class Main {
                     for(Person element : contact) {
                         if (removeName.equals(element.Name)){
                             contact.remove(element);
+                            System.out.println("New contact successfully deleted!");
                             objectFoundD = true;
                             break;
                         }
@@ -92,11 +117,10 @@ public class Main {
                 case "P":
                     System.out.println("[");
                     for (Person element : contact) {
-                        System.out.println(element.toString());
+                        System.out.println("-> " + element.toString());
                     }
                     System.out.println("]");
                     break;
-
 
                 case "S":
                     System.out.println("Search for name:");
@@ -121,6 +145,8 @@ public class Main {
                 case "Q":
                     System.out.println("See you next time!");
                     System.exit(0);
+                    break;
+
                 default:
                     System.out.println("Unknown input, enter proper input.");
             }
